@@ -9,25 +9,57 @@
   let startTime = null;
   let animationId = null;
 
+  let slideDirection = 'left'; // Track alternating direction
+
   function goToSlide(index) {
     const i = Math.max(0, Math.min(index, slides.length - 1));
     if (i === currentIndex) return;
+
+    const outgoingSlide = slides[currentIndex];
+    const incomingSlide = slides[i];
+
+    // Remove all classes from slides
+    slides.forEach(function (slide) {
+      slide.classList.remove("active", "exiting", "slide-left", "slide-right");
+    });
+
+    // Mark outgoing slide as exiting and add direction class
+    outgoingSlide.classList.add("exiting");
+    if (slideDirection === 'left') {
+      outgoingSlide.classList.add("slide-left");
+    } else {
+      outgoingSlide.classList.add("slide-right");
+    }
+
+    // Add direction class and active to incoming slide
+    if (slideDirection === 'left') {
+      incomingSlide.classList.add("slide-left", "active");
+    } else {
+      incomingSlide.classList.add("slide-right", "active");
+    }
+
     currentIndex = i;
 
-    slides.forEach(function (slide) {
-      slide.classList.remove("active");
-    });
+    // Alternate direction for next transition
+    slideDirection = slideDirection === 'left' ? 'right' : 'left';
+
+    // Update dots
     dots.forEach(function (dot) {
       dot.classList.remove("active");
       dot.setAttribute("aria-selected", "false");
     });
-
-    slides[currentIndex].classList.add("active");
     var activeDot = document.querySelector('.dot[data-index="' + currentIndex + '"]');
     if (activeDot) {
       activeDot.classList.add("active");
       activeDot.setAttribute("aria-selected", "true");
     }
+
+    // Clean up animation classes after animation completes
+    setTimeout(function() {
+      slides.forEach(function (slide) {
+        slide.classList.remove("exiting", "slide-left", "slide-right");
+      });
+    }, 600);
 
     startProgress();
   }
