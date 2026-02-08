@@ -190,29 +190,27 @@ body {
   outline-offset: 2px;
 }
 
-@media (max-width: 560px) {
-  .slide.active {
-    flex-direction: column;
-  }
-
-
+@media (max-width: 500px) {
   .image-panel {
-    flex: 0 0 200px;
-  }
-
-  .image-panel img {
-    min-height: 160px;
+    display: none;
   }
 
   .text-panel {
-    padding: 20px 24px;
+    flex: 1 1 100%;
+    padding: 24px 20px;
+    text-align: center;
+    align-items: center;
   }
 
   .text-panel h2 {
     font-size: 1.25rem;
+    text-align: center;
+    margin: 0 0 12px 0;
   }
 
   .text-panel p {
     font-size: 0.9rem;
+    text-align: center;
+    max-width: 100%;
   }
 }
