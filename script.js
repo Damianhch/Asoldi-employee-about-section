@@ -9,8 +9,6 @@
   let startTime = null;
   let animationId = null;
 
-  let slideDirection = 'left'; // Track alternating direction
-
   function goToSlide(index) {
     const i = Math.max(0, Math.min(index, slides.length - 1));
     if (i === currentIndex) return;
@@ -20,28 +18,16 @@
 
     // Remove all classes from slides
     slides.forEach(function (slide) {
-      slide.classList.remove("active", "exiting", "slide-left", "slide-right");
+      slide.classList.remove("active", "exiting");
     });
 
-    // Mark outgoing slide as exiting and add direction class
+    // Mark outgoing slide as exiting (will fade out to right)
     outgoingSlide.classList.add("exiting");
-    if (slideDirection === 'left') {
-      outgoingSlide.classList.add("slide-left");
-    } else {
-      outgoingSlide.classList.add("slide-right");
-    }
 
-    // Add direction class and active to incoming slide
-    if (slideDirection === 'left') {
-      incomingSlide.classList.add("slide-left", "active");
-    } else {
-      incomingSlide.classList.add("slide-right", "active");
-    }
+    // Add active to incoming slide (will fade in from left)
+    incomingSlide.classList.add("active");
 
     currentIndex = i;
-
-    // Alternate direction for next transition
-    slideDirection = slideDirection === 'left' ? 'right' : 'left';
 
     // Update dots
     dots.forEach(function (dot) {
@@ -57,7 +43,7 @@
     // Clean up animation classes after animation completes
     setTimeout(function() {
       slides.forEach(function (slide) {
-        slide.classList.remove("exiting", "slide-left", "slide-right");
+        slide.classList.remove("exiting");
       });
     }, 600);
 
